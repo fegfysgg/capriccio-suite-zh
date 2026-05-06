@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择服务器 · 追忆之路</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1b1a 0%, #2a2522 100%);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .container { max-width: 800px; width: 100%; }
+        .title-wrapper { text-align: center; margin-bottom: 50px; }
+        h1 { text-align: center; color: #d4c5a8; font-size: 28px; letter-spacing: 6px; font-weight: normal; border-bottom: 1px solid #4a3d2e; display: inline-block; padding-bottom: 10px; }
+        .sub { text-align: center; color: #8a7a62; font-size: 14px; margin-top: 10px; }
+        .servers { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+        .server-card {
+            position: relative;
+            background: rgba(30, 25, 20, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid #5a4d3e;
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 280px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .server-card:hover { transform: translateY(-10px); border-color: #b89a6e; background: rgba(40, 35, 28, 0.9); }
+        .server-icon { font-size: 48px; margin-bottom: 20px; }
+        .server-name { font-size: 24px; color: #d4c5a8; margin-bottom: 12px; }
+        .server-location { font-size: 13px; color: #9a8a6a; margin-bottom: 15px; }
+        .server-desc { font-size: 13px; color: #b0a080; line-height: 1.6; }
+        .recommend-badge { position: absolute; top: 12px; right: 12px; background: #c49a6c; color: #1a1510; font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: bold; }
+        .back-btn { display: inline-block; margin-top: 50px; color: #8a7a62; text-decoration: none; font-size: 13px; padding: 8px 20px; border: 1px solid #5a4d3e; border-radius: 30px; transition: 0.2s; }
+        .back-btn:hover { background: rgba(90, 77, 62, 0.3); color: #d4c5a8; }
+        footer { margin-top: 40px; font-size: 11px; color: #5a4d3e; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title-wrapper">
+            <h1>⚰️ 选择追忆之路 ⚰️</h1>
+            <div class="sub">Select the path to remembrance</div>
+        </div>
+        <div class="servers">
+            <div class="server-card" data-server="github">
+                <div class="recommend-badge">RECOMMEND</div>
+                <div class="server-icon">🌍</div>
+                <div class="server-name">GitHub · Global</div>
+                <div class="server-location">国外服务器 (海外)</div>
+                <div class="server-desc">全球CDN加速 · 稳定可靠</div>
+            </div>
+            <div class="server-card" data-server="cloudflare">
+                <div class="server-icon">🇨🇳</div>
+                <div class="server-name">Cloudflare · China</div>
+                <div class="server-location">国内加速节点 (大陆优化)</div>
+                <div class="server-desc">国内专线 · 低延迟</div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <a href="index.html" class="back-btn">← 返回墓碑</a>
+        </div>
+    </div>
+    <footer>选择服务器后，将进入语言选择页面</footer>
+
+    <script>
+        const cards = document.querySelectorAll('.server-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                const server = this.getAttribute('data-server');
+                localStorage.setItem('selected_server', server);
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = 'lang-select.html';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
