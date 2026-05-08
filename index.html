@@ -136,7 +136,23 @@
             z-index: -1;
         }
 
-        .jp-text { font-size: 32px; font-family: "Noto Serif SC", "KaiTi", serif; color: #e8dcc8; letter-spacing: 4px; margin: 15px 0 10px; }
+        /* 社团名称样式 */
+        .circle-name {
+            font-size: 18px;
+            font-family: "Noto Serif SC", "KaiTi", serif;
+            color: #d4c5a8;
+            letter-spacing: 2px;
+            margin: 10px 0 5px;
+            font-weight: 400;
+        }
+        .circle-name-ja {
+            font-size: 14px;
+            font-family: "Noto Serif SC", "KaiTi", serif;
+            color: #b8a880;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .jp-text { font-size: 32px; font-family: "Noto Serif SC", "KaiTi", serif; color: #e8dcc8; letter-spacing: 4px; margin: 5px 0 5px; }
         .zh-text { font-size: 14px; font-family: "Noto Serif SC", "Songti SC", serif; color: #c8bc9e; letter-spacing: 2px; margin: 8px 0; }
         .divider { width: 40px; height: 1px; background: #8a7a62; margin: 16px auto; opacity: 0.6; }
         .date { font-size: 11px; color: #9a8a6a; margin-top: 12px; }
@@ -190,18 +206,20 @@
         <span class="memory-text-zh">追忆之匣</span>
     </div>
 
-    <!-- 右上角音乐控件（小版）- 默认播放状态 -->
+    <!-- 右上角音乐控件 - 默认关闭状态 -->
     <div class="music-player" id="musicPlayer">
-        <span class="music-icon" id="musicIcon">🎶</span>
+        <span class="music-icon" id="musicIcon">🎵</span>
         <span class="music-text">鎮魂曲</span>
-        <span class="music-status" id="musicStatus">鎮魂</span>
+        <span class="music-status" id="musicStatus">静寂</span>
     </div>
 
     <div class="grave-container">
         <div class="tombstone" id="tombstone">
             <div class="epitaph">
+                <div class="circle-name">Capriccio Suite</div>
+                <div class="circle-name-ja">同人サークル</div>
                 <div class="jp-text">カプリチオ組曲</div>
-                <div class="zh-text">随想曲组曲</div>
+                <div class="zh-text">同人社团「随想曲组曲」</div>
                 <div class="divider"></div>
                 <div class="jp-text" style="font-size: 22px;">創作の痕跡</div>
                 <div class="zh-text" style="font-size: 12px;">创作的痕迹</div>
@@ -236,57 +254,31 @@
             navigateWithTarget('archive');
         });
 
-        // ========== 音乐播放器（真实播放 + 自动播放）==========
+        // ========== 音乐播放器（默认关闭，点击按钮才播放）==========
         const musicPlayer = document.getElementById('musicPlayer');
         const musicStatus = document.getElementById('musicStatus');
         const musicIcon = document.getElementById('musicIcon');
         
-        // 创建音频对象 - 音乐文件放在根目录，文件名为 bgm.mp3（请根据实际文件名修改）
+        // 创建音频对象 - 音乐文件放在根目录，请根据实际文件名修改
         const audio = new Audio('bgm.wav');
         audio.loop = true;  // 循环播放
         audio.volume = 0.5; // 音量 50%
         
-        let isPlaying = false;
+        let isPlaying = false;  // 默认关闭
         
-        // 尝试自动播放（浏览器策略：需要用户交互后才能播放）
-        // 解决方案：监听页面任意点击或触摸来启动播放
-        function tryAutoPlay() {
-            audio.play().then(() => {
-                isPlaying = true;
-                musicStatus.innerText = '鎮魂';
-                musicIcon.innerText = '🎶';
-            }).catch((e) => {
-                console.log('自动播放被阻止，等待用户第一次点击');
-                // 设置一次交互监听，用户第一次点击任何地方时开始播放
-                const startAudio = () => {
-                    audio.play();
-                    isPlaying = true;
-                    musicStatus.innerText = '鎮魂';
-                    musicIcon.innerText = '🎶';
-                    document.removeEventListener('click', startAudio);
-                    document.removeEventListener('touchstart', startAudio);
-                };
-                document.addEventListener('click', startAudio);
-                document.addEventListener('touchstart', startAudio);
-            });
-        }
-        
-        // 页面加载后延迟一小会儿尝试自动播放
-        setTimeout(tryAutoPlay, 100);
-        
-        // 按钮点击：暂停/继续
+        // 按钮点击：开始播放 / 暂停
         musicPlayer.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
-                musicStatus.innerText = '静寂';
-                musicIcon.innerText = '🎵';
-            } else {
+            if (!isPlaying) {
                 audio.play();
                 isPlaying = true;
                 musicStatus.innerText = '鎮魂';
                 musicIcon.innerText = '🎶';
+            } else {
+                audio.pause();
+                isPlaying = false;
+                musicStatus.innerText = '静寂';
+                musicIcon.innerText = '🎵';
             }
         });
     </script>
